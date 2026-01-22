@@ -683,7 +683,7 @@
   },
   "log": {
     "disabled": false,
-    "level": "warn",
+    "level": "warning",
     "timestamp": true
   }
 }
