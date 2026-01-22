@@ -683,7 +683,7 @@
   },
   "log": {
     "disabled": false,
-    "level": "error",
+    "level": "info",
     "timestamp": true
   }
 }
