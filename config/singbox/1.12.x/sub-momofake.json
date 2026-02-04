@@ -11,16 +11,11 @@
         "type": "udp",
         "server": "223.5.5.5"
       },
-      {
-        "tag": "public",
-        "type": "udp",
-        "server": "223.5.5.5",
-        "detour": "🎯 全球直连"
-      },
+        {"tag": "public", "type": "https", "server": "dns.alidns.com", "domain_resolver": "local"},
       {
         "tag": "foreign",
         "type": "https",
-        "server": "https://8.8.8.8/dns-query",
+        "server": "8.8.8.8",
         "detour": "🚀 默认代理"
       }
     ],
