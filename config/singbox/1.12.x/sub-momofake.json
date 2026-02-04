@@ -23,14 +23,10 @@
         "server": "https://dns.google/dns-query",
         "detour": "🚀 默认代理"
       }
-      // ❌ 已删除报错的 "block" 服务器
     ],
     "rules": [
       { "domain_suffix": ["openos.asia"], "server": "local" },
-      
-      // ✅ 修改：直接拒绝广告解析，不需要额外的 block 服务器
       { "rule_set": "geosite-ads", "action": "reject" },
-      
       { "rule_set": "geosite-game-cn", "server": "local" },
       { "rule_set": "geosite-apple-cn", "server": "local" },
       { "rule_set": "geosite-microsoft-cn", "server": "local" },
@@ -106,12 +102,18 @@
   ],
   "route": {
     "rules": [
-      { "domain_suffix": ["openos.asia"], "outbound": "🎯 全球直连", "sniff": false },
-      { "rule_set": "geosite-game-cn", "outbound": "🎯 全球直连", "sniff": false },
-      { "rule_set": "geosite-apple-cn", "outbound": "🎯 全球直连", "sniff": false },
-      { "rule_set": "geosite-microsoft-cn", "outbound": "🎯 全球直连", "sniff": false },
+      // 1. Hy2 防环路 (匹配即直连，不触发后续 sniff)
+      { "domain_suffix": ["openos.asia"], "outbound": "🎯 全球直连" },
+      
+      // 2. 游戏、Apple/MS 国内流量 (匹配即直连，不触发后续 sniff)
+      { "rule_set": "geosite-game-cn", "outbound": "🎯 全球直连" },
+      { "rule_set": "geosite-apple-cn", "outbound": "🎯 全球直连" },
+      { "rule_set": "geosite-microsoft-cn", "outbound": "🎯 全球直连" },
+
+      // 3. 只有未匹配上述规则的流量，才会进入这里被嗅探
       { "action": "sniff", "sniffer": ["http", "tls", "quic", "dns"] },
       { "inbound": "dns-in", "action": "hijack-dns" },
+      
       { "protocol": "bittorrent", "outbound": "🎯 全球直连" },
       { "protocol": "udp", "port": 123, "outbound": "🎯 全球直连" },
       { "ip_is_private": true, "outbound": "🎯 全球直连" },
