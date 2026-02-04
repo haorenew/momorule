@@ -13,14 +13,14 @@
       },
       {
         "tag": "public",
-        "type": "https",
-        "server": "https://dns.alidns.com/dns-query",
-        "domain_resolver": "local"
+        "type": "udp",
+        "server": "223.5.5.5",
+        "detour": "🎯 全球直连"
       },
       {
         "tag": "foreign",
         "type": "https",
-        "server": "https://dns.google/dns-query",
+        "server": "https://8.8.8.8/dns-query",
         "detour": "🚀 默认代理"
       }
     ],
@@ -102,18 +102,12 @@
   ],
   "route": {
     "rules": [
-      // 1. Hy2 防环路 (匹配即直连，不触发后续 sniff)
       { "domain_suffix": ["openos.asia"], "outbound": "🎯 全球直连" },
-      
-      // 2. 游戏、Apple/MS 国内流量 (匹配即直连，不触发后续 sniff)
       { "rule_set": "geosite-game-cn", "outbound": "🎯 全球直连" },
       { "rule_set": "geosite-apple-cn", "outbound": "🎯 全球直连" },
       { "rule_set": "geosite-microsoft-cn", "outbound": "🎯 全球直连" },
-
-      // 3. 只有未匹配上述规则的流量，才会进入这里被嗅探
       { "action": "sniff", "sniffer": ["http", "tls", "quic", "dns"] },
       { "inbound": "dns-in", "action": "hijack-dns" },
-      
       { "protocol": "bittorrent", "outbound": "🎯 全球直连" },
       { "protocol": "udp", "port": 123, "outbound": "🎯 全球直连" },
       { "ip_is_private": true, "outbound": "🎯 全球直连" },
