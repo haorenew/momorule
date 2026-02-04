@@ -4,7 +4,7 @@
     "level": "warn",
     "timestamp": true
   },
-  "dns": {
+ "dns": {
     "servers": [
       {
         "tag": "local",
